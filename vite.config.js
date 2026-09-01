@@ -1,7 +1,8 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-// https://vite.dev/config/
+// GitHub Pages serves the project from /lauvo/ rather than the domain root.
 export default defineConfig({
+  base: '/lauvo/',
   plugins: [react()],
 })
