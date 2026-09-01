@@ -1,0 +1,41 @@
+/*
+  Design tokens — "From Earth to the Moon"
+  A construction-site palette (crane amber, concrete grey, blueprint ink)
+  that ages into cold lunar tones as the journey ascends.
+  See PROJECT_STATE.md > Decisiones de diseño for rationale.
+*/
+
+:root {
+  /* Core palette */
+  --color-void: #0a0e14;        /* base background, night sky / space */
+  --color-ink: #12161d;         /* raised surface over void */
+  --color-concrete: #8b8d93;    /* structural grey, secondary text */
+  --color-concrete-light: #c7c9ce;
+  --color-paper: #eef0f3;       /* primary text on dark */
+  --color-crane: #f2a93b;       /* signature accent — construction amber */
+  --color-crane-dim: #7a5a20;
+  --color-blueprint: #3d6fa8;   /* cool technical blue, used sparingly */
+  --color-earth-clay: #7c6a58;  /* only present in the opening Earth beat */
+
+  /* Type */
+  --font-display: 'Space Grotesk', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --fs-hero: clamp(2.9rem, 9vw, 8rem);
+  --fs-h1: clamp(2rem, 4.5vw, 3.5rem);
+  --fs-h2: clamp(1.5rem, 3vw, 2.25rem);
+  --fs-body: 1.05rem;
+  --fs-caption: 0.8rem;
+
+  /* Rhythm */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+
+  /* Motion */
+  --ease-out-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-base: 0.6s;
+}

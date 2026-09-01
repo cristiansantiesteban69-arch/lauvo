@@ -1,0 +1,404 @@
+@import './tokens.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-void);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+#root {
+  position: relative;
+  width: 100%;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--color-concrete-light);
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--color-crane);
+  color: var(--color-void);
+}
+
+.experience-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+}
+
+.experience-canvas canvas {
+  display: block;
+}
+
+/* Pure-CSS cinematic layer: a radial vignette (depth + text legibility)
+   plus a barely-visible grain texture (premium filmic feel). No draw
+   calls, no images — an inline SVG noise data-uri at very low opacity. */
+.cinematic-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 45%, transparent 35%, rgba(5, 6, 9, 0.55) 100%);
+}
+
+.cinematic-vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+}
+
+.journey-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* LAUVO consolidation: persistent brand mark, visible for the entire
+   scroll (not just the hero) — the anchor point a future full nav menu
+   (brief section 9) attaches to. z-index above journey-content so it
+   never gets covered by section backgrounds. */
+.brand-mark {
+  position: fixed;
+  top: var(--space-md);
+  left: var(--space-md);
+  z-index: 3;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
+  color: var(--color-paper);
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+
+@media (max-width: 640px) {
+  .brand-mark {
+    top: var(--space-sm);
+    left: var(--space-sm);
+    font-size: 0.9rem;
+  }
+}
+
+.journey-track {
+  position: relative;
+  /* Long enough to let the 6-stage skyscraper construction (foundation
+     through completion) breathe — short tracks compress the whole build
+     into a couple of screens, which reads as a jump-cut instead of a
+     scroll-driven construction. See src/lib/journeyMap.js (HERO_END,
+     BUILDING_END, ASCENT_END) and buildingConfig.STAGES for how progress
+     maps onto this scroll length.
+     Phase 4.1 added ~900vh (2050vh tablet) for the ascent-away-from-the-
+     tower stage. Phase 4.2 added another 1250vh (1025vh tablet) for deep
+     space (stars + distant Earth) — both additions scale the whole
+     journey-track by exactly 1.5x each time (1 / journeyMap.DEEP_SPACE
+     ratio), which is what keeps journeyMap's segment-boundary math exact
+     instead of approximate. If this height changes again, recompute the
+     relevant boundary constant in journeyMap.js the same way. */
+  height: 3750vh;
+}
+
+.section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--space-lg) var(--space-md);
+}
+
+.section--hero {
+  position: relative;
+  gap: 0;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  color: var(--color-crane);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: var(--space-md);
+}
+
+.hero-eyebrow__line {
+  width: 32px;
+  height: 1px;
+  background: var(--color-crane);
+}
+
+.hero-title {
+  font-size: var(--fs-hero);
+  font-weight: 600;
+  color: var(--color-paper);
+  line-height: 0.98;
+  max-width: 17ch;
+}
+
+.hero-title__mask {
+  display: block;
+  overflow: hidden;
+}
+
+.hero-title__line {
+  display: block;
+  will-change: transform;
+}
+
+.hero-sub {
+  margin-top: var(--space-md);
+  font-size: var(--fs-body);
+  color: var(--color-concrete-light);
+  max-width: 34ch;
+}
+
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.95rem 1.9rem;
+  border-radius: 2px;
+  cursor: pointer;
+  isolation: isolate;
+  transition: transform var(--dur-base) var(--ease-out-cinematic),
+    border-color var(--dur-base) var(--ease-out-cinematic),
+    color var(--dur-base) var(--ease-out-cinematic);
+}
+
+.btn span {
+  position: relative;
+  z-index: 1;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateY(101%);
+  transition: transform var(--dur-base) var(--ease-out-cinematic);
+  z-index: 0;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:hover::before {
+  transform: translateY(0%);
+}
+
+.btn--primary {
+  background: var(--color-crane);
+  color: var(--color-void);
+  border: 1px solid var(--color-crane);
+}
+
+.btn--primary::before {
+  background: var(--color-paper);
+}
+
+.btn--primary:hover {
+  color: var(--color-void);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-paper);
+  border: 1px solid var(--color-concrete);
+}
+
+.btn--ghost::before {
+  background: var(--color-paper);
+}
+
+.btn--ghost:hover {
+  color: var(--color-void);
+  border-color: var(--color-paper);
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: var(--space-lg);
+  left: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  height: 60px;
+}
+
+.scroll-cue__label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-concrete);
+}
+
+.scroll-cue__line {
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(to bottom, var(--color-crane), transparent);
+  animation: scrollCuePulse 2.2s ease-in-out infinite;
+}
+
+@keyframes scrollCuePulse {
+  0%, 100% { opacity: 0.35; transform: scaleY(0.6); transform-origin: top; }
+  50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+}
+
+/* Scroll captions — framed as blueprint/engineering annotations that sit
+   in the lower third, in step with the narrative, instead of generic
+   centered floating text. */
+.scroll-captions {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0 var(--space-md) var(--space-xl);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.scroll-caption {
+  position: absolute;
+  bottom: var(--space-xl);
+  left: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  transition: opacity 0.25s linear, transform 0.25s ease-out;
+}
+
+.scroll-caption__index {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-crane);
+  letter-spacing: 0.1em;
+}
+
+.scroll-caption__rule {
+  width: 24px;
+  height: 1px;
+  background: var(--color-concrete);
+}
+
+.scroll-caption__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-paper);
+}
+
+.scroll-caption__label {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  color: var(--color-concrete);
+}
+
+@media (max-width: 1024px) {
+  .journey-track {
+    height: 3075vh;
+  }
+
+  .hero-title {
+    max-width: 14ch;
+  }
+
+  .scroll-caption {
+    left: var(--space-sm);
+    bottom: var(--space-lg);
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: var(--space-md) var(--space-sm);
+  }
+
+  .hero-title {
+    font-size: clamp(2.25rem, 11vw, 3rem);
+    max-width: 12ch;
+  }
+
+  .hero-sub {
+    max-width: 28ch;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm);
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .scroll-cue {
+    left: var(--space-sm);
+    bottom: var(--space-md);
+  }
+
+  .scroll-caption {
+    left: var(--space-sm);
+    bottom: var(--space-md);
+  }
+
+  .scroll-caption__text {
+    font-size: 0.72rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
